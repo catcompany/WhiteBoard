@@ -1,6 +1,7 @@
 package com.imorning.whiteboard.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import com.imorning.whiteboard.databinding.ActivityMainBinding;
 import com.imorning.whiteboard.utils.FileUtil;
 import com.imorning.whiteboard.utils.OperationUtils;
 import com.imorning.whiteboard.utils.StoreUtil;
-import com.imorning.whiteboard.utils.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,8 +24,6 @@ public class MainActivity extends BaseActivity {
     ArrayList<String> filenames;
     ArrayList<String> filePaths;
     private ActivityMainBinding binding;
-    private WbAdapter mWbAdapter;
-    private long mBackPressedTime;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,41 +38,39 @@ public class MainActivity extends BaseActivity {
         File folder = new File(StoreUtil.getWbPath());
         if (!folder.exists()) {
             folder.mkdirs();
+            return;
         }
         final File[] files = folder.listFiles();
+        assert files != null;
         if (files.length > 0) {
-            filenames = new ArrayList<String>();
-            filePaths = new ArrayList<String>();
+            filenames = new ArrayList<>();
+            filePaths = new ArrayList<>();
             for (File f : files) {
                 filenames.add(FileUtil.getFileName(f));
                 filePaths.add(f.getAbsolutePath());
             }
+            binding.mainNullListLayout.setVisibility(View.GONE);
         }
 
     }
 
     private void initView() {
-        mWbAdapter = new WbAdapter();
+        WbAdapter mWbAdapter = new WbAdapter();
         binding.lvWb.setAdapter(mWbAdapter);
-        binding.ivWbAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OperationUtils.getInstance().initDrawPointList();
-                navi2Page(WhiteBoardActivity.class);
-            }
+        binding.ivWbAdd.setOnClickListener(v -> {
+            OperationUtils.getInstance().initDrawPointList();
+            Intent intent = new Intent(MainActivity.this, WhiteBoardActivity.class);
+            startActivity(intent);
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        final long mCurrentTime = System.currentTimeMillis();
-        if (mCurrentTime - this.mBackPressedTime > 1000) {
-            ToastUtils.showToast(this, R.string.app_logout);
-            this.mBackPressedTime = mCurrentTime;
-            return;
+    private static final class WbViewHolder {
+
+        final TextView nWbName;
+
+        public WbViewHolder(final View view) {
+            this.nWbName = view.findViewById(R.id.tv_wb_name);
         }
-        super.onBackPressed();
-        System.exit(0);
     }
 
     private class WbAdapter extends BaseAdapter {
@@ -101,27 +97,18 @@ public class MainActivity extends BaseActivity {
             } else {
                 convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.wb_item, null);
                 if (convertView != null) {
-                    convertView.setTag(
-                            holder = new WbViewHolder(convertView)
-                    );
+                    convertView.setTag(holder = new WbViewHolder(convertView));
                 }
                 if (holder != null) {
                     holder.nWbName.setText(filenames.get(position));
                     convertView.setOnClickListener(v -> {
                         StoreUtil.readWhiteBoardPoints(filePaths.get(position));
-                        navi2Page(WhiteBoardActivity.class);
+                        Intent intent = new Intent(MainActivity.this, WhiteBoardActivity.class);
+                        startActivity(intent);
                     });
                 }
             }
             return convertView;
-        }
-    }
-
-    private final class WbViewHolder {
-        final TextView nWbName;
-
-        public WbViewHolder(final View view) {
-            this.nWbName = view.findViewById(R.id.tv_wb_name);
         }
     }
 }

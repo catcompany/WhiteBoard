@@ -358,11 +358,11 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
     /**
      * 重新显示白板
      */
-    @SuppressLint("SetTextI18n")
     private void showPoints() {
         binding.dbView.showPoints();
         binding.dtView.showPoints();
-        binding.tvWhiteBoardPage.setText("" + (OperationUtils.getInstance().mCurrentIndex + 1) + "/" + OperationUtils.getInstance().getDrawPointSize());
+        binding.tvWhiteBoardPage.setText(getString(R.string.project_index_all,
+                OperationUtils.getInstance().mCurrentIndex + 1,OperationUtils.getInstance().getDrawPointSize()));
         showPage();
         showUndoRedo();
     }
@@ -431,9 +431,7 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
         binding.ivWhiteBoardSave.setVisibility(View.VISIBLE);
         binding.rlBottom.setVisibility(View.VISIBLE);
         binding.ivWhiteBoardDisable.setVisibility(View.VISIBLE);
-        //mLayoutParams = (RelativeLayout.LayoutParams) mRlContent.getLayoutParams();
-        //mLayoutParams.setMargins(OperationUtils.dip2px(24), 0, OperationUtils.dip2px(24), OperationUtils.dip2px(24));
-        //mRlContent.setLayoutParams(mLayoutParams);
+
         binding.ivWhiteBoardQuit.setVisibility(View.GONE);
         binding.ivWhiteBoardConfirm.setVisibility(View.GONE);
         binding.dbView.showPoints();
@@ -456,10 +454,10 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
      */
     private void showOutSideView() {
         new Handler().postDelayed(() -> {
-            if (OperationUtils.getInstance().mCurrentOPerationPen == WhiteBoardVariable.Operation.PEN_EXPAND
-                    || OperationUtils.getInstance().mCurrentOPerationColor == WhiteBoardVariable.Operation.COLOR_EXPAND
-                    || OperationUtils.getInstance().mCurrentOPerationText == WhiteBoardVariable.Operation.TEXT_EXPAND
-                    || OperationUtils.getInstance().mCurrentOPerationEraser == WhiteBoardVariable.Operation.ERASER_EXPAND) {
+            if (OperationUtils.getInstance().mCurrentOperationPen == WhiteBoardVariable.Operation.PEN_EXPAND
+                    || OperationUtils.getInstance().mCurrentOperationColor == WhiteBoardVariable.Operation.COLOR_EXPAND
+                    || OperationUtils.getInstance().mCurrentOperationText == WhiteBoardVariable.Operation.TEXT_EXPAND
+                    || OperationUtils.getInstance().mCurrentOperationEraser == WhiteBoardVariable.Operation.ERASER_EXPAND) {
                 binding.vBottomBack.setVisibility(View.VISIBLE);
             } else {
                 binding.vBottomBack.setVisibility(View.GONE);
@@ -474,52 +472,52 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
     private void setPenOperation(int currentOperation) {
         switch (currentOperation) {
             case WhiteBoardVariable.Operation.PEN_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationPen) {
+                switch (OperationUtils.getInstance().mCurrentOperationPen) {
                     case WhiteBoardVariable.Operation.PEN_NORMAL:
                         OperationUtils.getInstance().mCurrentDrawType = OperationUtils.DRAW_PEN;
                         binding.dbView.setPaint(null);
                         binding.fabMenuSize.setAddButtonBackground(R.drawable.white_board_pen_selected_selector);
-                        OperationUtils.getInstance().mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_CLICK;
                         break;
                     case WhiteBoardVariable.Operation.PEN_CLICK:
                         binding.fabMenuSize.expand();
                         changePenBack();
-                        OperationUtils.getInstance().mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_EXPAND;
+                        OperationUtils.getInstance().mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_EXPAND;
                         break;
                     case WhiteBoardVariable.Operation.PEN_EXPAND:
                         binding.fabMenuSize.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_CLICK;
                         break;
                 }
                 break;
             case WhiteBoardVariable.Operation.TEXT_CLICK:
             case WhiteBoardVariable.Operation.ERASER_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationPen) {
+                switch (OperationUtils.getInstance().mCurrentOperationPen) {
                     case WhiteBoardVariable.Operation.PEN_NORMAL:
                         break;
                     case WhiteBoardVariable.Operation.PEN_CLICK:
                         binding.fabMenuSize.clearDraw();
                         binding.fabMenuSize.setAddButtonBackground(R.drawable.white_board_pen_selector);
-                        OperationUtils.getInstance().mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_NORMAL;
                         break;
                     case WhiteBoardVariable.Operation.PEN_EXPAND:
                         binding.fabMenuSize.collapse();
                         binding.fabMenuSize.clearDraw();
                         binding.fabMenuSize.setAddButtonBackground(R.drawable.white_board_pen_selector);
-                        OperationUtils.getInstance().mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_NORMAL;
                         break;
                 }
                 break;
             case WhiteBoardVariable.Operation.COLOR_CLICK:
             case WhiteBoardVariable.Operation.OUTSIDE_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationPen) {
+                switch (OperationUtils.getInstance().mCurrentOperationPen) {
                     case WhiteBoardVariable.Operation.PEN_NORMAL:
                         break;
                     case WhiteBoardVariable.Operation.PEN_CLICK:
                         break;
                     case WhiteBoardVariable.Operation.PEN_EXPAND:
                         binding.fabMenuSize.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_CLICK;
                         break;
                 }
                 break;
@@ -537,24 +535,24 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
             case WhiteBoardVariable.Operation.TEXT_CLICK:
             case WhiteBoardVariable.Operation.ERASER_CLICK:
             case WhiteBoardVariable.Operation.OUTSIDE_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationColor) {
+                switch (OperationUtils.getInstance().mCurrentOperationColor) {
                     case WhiteBoardVariable.Operation.COLOR_NORMAL:
                         break;
                     case WhiteBoardVariable.Operation.COLOR_EXPAND:
                         binding.fabMenuColor.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
                         break;
                 }
                 break;
             case WhiteBoardVariable.Operation.COLOR_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationColor) {
+                switch (OperationUtils.getInstance().mCurrentOperationColor) {
                     case WhiteBoardVariable.Operation.COLOR_NORMAL:
                         binding.fabMenuColor.expand();
-                        OperationUtils.getInstance().mCurrentOPerationColor = WhiteBoardVariable.Operation.COLOR_EXPAND;
+                        OperationUtils.getInstance().mCurrentOperationColor = WhiteBoardVariable.Operation.COLOR_EXPAND;
                         break;
                     case WhiteBoardVariable.Operation.COLOR_EXPAND:
                         binding.fabMenuColor.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
                         break;
                 }
                 break;
@@ -569,11 +567,11 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
     private void setTextOperation(int currentOperation) {
         switch (currentOperation) {
             case WhiteBoardVariable.Operation.TEXT_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationText) {
+                switch (OperationUtils.getInstance().mCurrentOperationText) {
                     case WhiteBoardVariable.Operation.TEXT_NORMAL:
                         OperationUtils.getInstance().mCurrentDrawType = OperationUtils.DRAW_TEXT;
                         binding.fabMenuText.setAddButtonBackground(R.drawable.white_board_text_selected_selector);
-                        OperationUtils.getInstance().mCurrentOPerationText = WhiteBoardVariable.Operation.TEXT_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationText = WhiteBoardVariable.Operation.TEXT_CLICK;
                         break;
                     case WhiteBoardVariable.Operation.TEXT_CLICK:
                         int size = OperationUtils.getInstance().getSavePoints().size();
@@ -583,44 +581,44 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
                                     == DrawTextView.TEXT_DETAIL) {
                                 changeTextBack();
                                 binding.fabMenuText.expand();
-                                OperationUtils.getInstance().mCurrentOPerationText
+                                OperationUtils.getInstance().mCurrentOperationText
                                         = WhiteBoardVariable.Operation.TEXT_EXPAND;
                             }
                         }
                         break;
                     case WhiteBoardVariable.Operation.TEXT_EXPAND:
                         binding.fabMenuText.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationText = WhiteBoardVariable.Operation.TEXT_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationText = WhiteBoardVariable.Operation.TEXT_CLICK;
                         break;
                 }
                 break;
             case WhiteBoardVariable.Operation.PEN_CLICK:
             case WhiteBoardVariable.Operation.ERASER_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationText) {
+                switch (OperationUtils.getInstance().mCurrentOperationText) {
                     case WhiteBoardVariable.Operation.TEXT_NORMAL:
                         break;
                     case WhiteBoardVariable.Operation.TEXT_CLICK:
                         binding.fabMenuText.clearDraw();
                         binding.fabMenuText.setAddButtonBackground(R.drawable.white_board_text_selector);
-                        OperationUtils.getInstance().mCurrentOPerationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
                         break;
                     case WhiteBoardVariable.Operation.TEXT_EXPAND:
                         binding.fabMenuText.collapse();
                         binding.fabMenuText.clearDraw();
                         binding.fabMenuText.setAddButtonBackground(R.drawable.white_board_text_selector);
-                        OperationUtils.getInstance().mCurrentOPerationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
                         break;
                 }
                 break;
             case WhiteBoardVariable.Operation.COLOR_CLICK:
             case WhiteBoardVariable.Operation.OUTSIDE_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationText) {
+                switch (OperationUtils.getInstance().mCurrentOperationText) {
                     case WhiteBoardVariable.Operation.TEXT_NORMAL:
                     case WhiteBoardVariable.Operation.TEXT_CLICK:
                         break;
                     case WhiteBoardVariable.Operation.TEXT_EXPAND:
                         binding.fabMenuText.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationText = WhiteBoardVariable.Operation.TEXT_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationText = WhiteBoardVariable.Operation.TEXT_CLICK;
                         break;
                 }
                 break;
@@ -635,52 +633,52 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
     private void setEraserOperation(int currentOperation) {
         switch (currentOperation) {
             case WhiteBoardVariable.Operation.ERASER_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationEraser) {
+                switch (OperationUtils.getInstance().mCurrentOperationEraser) {
                     case WhiteBoardVariable.Operation.ERASER_NORMAL:
                         OperationUtils.getInstance().mCurrentDrawType = OperationUtils.DRAW_ERASER;
                         binding.dbView.changeEraser();
                         binding.fabMenuEraser.setAddButtonBackground(R.drawable.white_board_eraser_selected_selector);
-                        OperationUtils.getInstance().mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_CLICK;
                         break;
                     case WhiteBoardVariable.Operation.ERASER_CLICK:
                         binding.fabMenuEraser.expand();
                         changeEraserBack();
-                        OperationUtils.getInstance().mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_EXPAND;
+                        OperationUtils.getInstance().mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_EXPAND;
                         break;
                     case WhiteBoardVariable.Operation.ERASER_EXPAND:
                         binding.fabMenuEraser.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_CLICK;
                         break;
                 }
                 break;
             case WhiteBoardVariable.Operation.TEXT_CLICK:
             case WhiteBoardVariable.Operation.PEN_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationEraser) {
+                switch (OperationUtils.getInstance().mCurrentOperationEraser) {
                     case WhiteBoardVariable.Operation.ERASER_NORMAL:
                         break;
                     case WhiteBoardVariable.Operation.ERASER_CLICK:
                         binding.fabMenuEraser.clearDraw();
                         binding.fabMenuEraser.setAddButtonBackground(R.drawable.white_board_eraser_selector);
-                        OperationUtils.getInstance().mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
                         break;
                     case WhiteBoardVariable.Operation.ERASER_EXPAND:
                         binding.fabMenuEraser.collapse();
                         binding.fabMenuEraser.clearDraw();
                         binding.fabMenuEraser.setAddButtonBackground(R.drawable.white_board_eraser_selector);
-                        OperationUtils.getInstance().mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
+                        OperationUtils.getInstance().mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
                         break;
                 }
                 break;
             case WhiteBoardVariable.Operation.COLOR_CLICK:
             case WhiteBoardVariable.Operation.OUTSIDE_CLICK:
-                switch (OperationUtils.getInstance().mCurrentOPerationEraser) {
+                switch (OperationUtils.getInstance().mCurrentOperationEraser) {
                     case WhiteBoardVariable.Operation.ERASER_NORMAL:
                         break;
                     case WhiteBoardVariable.Operation.ERASER_CLICK:
                         break;
                     case WhiteBoardVariable.Operation.ERASER_EXPAND:
                         binding.fabMenuEraser.collapse();
-                        OperationUtils.getInstance().mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_CLICK;
+                        OperationUtils.getInstance().mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_CLICK;
                         break;
                 }
                 break;
@@ -712,13 +710,13 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
             out.flush();
             out.close();
             binding.flView.destroyDrawingCache();
-
+            //update thumbnail
             Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri uri = Uri.fromFile(file);
             intent.setData(uri);
-            sendBroadcast(intent);//这个广播的目的就是更新图库
+            sendBroadcast(intent);
 
-            showMessage(getString(R.string.white_board_export_tip) + fileName);
+            showMessage(getString(R.string.white_board_export_tip, fileName));
         } catch (Exception e) {
             showMessage(getString(R.string.white_board_export_fail));
             e.printStackTrace();
@@ -728,7 +726,6 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
 
     @ReceiveEvents(name = Events.WHITE_BOARD_TEXT_EDIT)

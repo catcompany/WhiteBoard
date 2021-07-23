@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorPrimary">
@@ -14,18 +16,46 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/app_list"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textColor="@color/default_font_color"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_wb_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="24dip"
-            android:src="@drawable/ic_wb_add" />
-    </RelativeLayout>
+            android:layout_marginEnd="24dip"
+            android:src="@drawable/ic_wb_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_null_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12sp"
+            android:text="@string/list_is_null"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,10 +65,10 @@
             android:id="@+id/tv_list_loading"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/app_list_loading"
             android:gravity="center"
-            android:visibility="gone"
-            android:textSize="20sp" />
+            android:text="@string/app_list_loading"
+            android:textSize="20sp"
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/lv_wb"
@@ -52,4 +82,5 @@
             android:listSelector="@null" />
 
     </RelativeLayout>
+
 </LinearLayout>

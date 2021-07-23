@@ -6,7 +6,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.text.Spannable;
 import android.text.TextUtils;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,7 +28,7 @@ public class DrawTextView extends RelativeLayout implements
         View.OnClickListener {
 
     /**
-     * 显示状态
+     * In editing status
      */
     public static final int TEXT_VIEW = 1;
     /**
@@ -40,7 +40,7 @@ public class DrawTextView extends RelativeLayout implements
      */
     public static final int TEXT_DETAIL = 3;
     /**
-     * 被删除状态
+     * In the deleted state
      */
     public static final int TEXT_DELETE = 4;
 
@@ -81,7 +81,7 @@ public class DrawTextView extends RelativeLayout implements
 
     private int mWidth;
     /**
-     * 特殊字符所需
+     * Special characters required
      */
     private Spannable mSpannable;
 
@@ -92,15 +92,15 @@ public class DrawTextView extends RelativeLayout implements
         init(context, drawPoint, callBackListener);
     }
 
-    private void init(Context context
-            , DrawPoint drawPoint,
-                      CallBackListener callBackListener) {
+    private void init(Context context, DrawPoint drawPoint, CallBackListener callBackListener) {
         mContext = context;
         mDrawPoint = DrawPoint.copyDrawPoint(drawPoint);
         mCallBackListener = callBackListener;
-        Display display = ((Activity) mContext).getWindowManager()
-                .getDefaultDisplay();
-        mWidth = display.getWidth();
+        //Display display = ((Activity) mContext).getWindowManager().getDefaultDisplay();
+        //mWidth = display.getWidth();
+        DisplayMetrics dm = new DisplayMetrics();
+         ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        mWidth  = dm.widthPixels;
         initUI();
         initEvent();
         switchView(mDrawPoint.getDrawText().getStatus());
@@ -109,10 +109,7 @@ public class DrawTextView extends RelativeLayout implements
 
 
     /**
-     * 初始化界面控件 <br>
-     * Created 2015-8-10 16:55:49
-     *
-     * @author : gpy
+     * init ui and controls.
      */
     private void initUI() {
         LayoutInflater.from(mContext).inflate(R.layout.draw_text, this, true);
@@ -131,12 +128,7 @@ public class DrawTextView extends RelativeLayout implements
     }
 
 
-    /**
-     * 初始化监听
-     * @author iMorning
-     */
     @SuppressLint("ClickableViewAccessibility")
-    // TODO: 2021/7/23 fix this warning
     private void initEvent() {
         mVOutside.setOnClickListener(this);
         mRlText.setOnClickListener(this);
@@ -153,7 +145,6 @@ public class DrawTextView extends RelativeLayout implements
                     int ea = event.getAction();
                     switch (ea) {
                         case MotionEvent.ACTION_DOWN:
-                            // 获取触摸事件触摸位置的原始X坐标
                             lastX = (int) event.getRawX();
                             lastY = (int) event.getRawY();
                             break;
@@ -183,7 +174,6 @@ public class DrawTextView extends RelativeLayout implements
                             }
                             mDrawPoint.getDrawText().setX(left);
                             mDrawPoint.getDrawText().setY(top);
-                            //Log.e("移动", "-" + left + "," + top);
                             mRlContent.layout(left, top, right, bottom);
                             lastX = (int) event.getRawX();
                             lastY = (int) event.getRawY();
@@ -193,9 +183,11 @@ public class DrawTextView extends RelativeLayout implements
                                 mCallBackListener.onUpdate(mDrawPoint);
                             }
                             break;
+                        default:
+                            break;
                     }
-                }
 
+                }
                 return false;
             }
         });
@@ -221,8 +213,7 @@ public class DrawTextView extends RelativeLayout implements
     }
 
     private void setLayoutParams() {
-        LayoutParams layParamsTxt = new LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams layParamsTxt = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         layParamsTxt.leftMargin = (int) mDrawPoint.getDrawText().getX();
         layParamsTxt.topMargin = (int) mDrawPoint.getDrawText().getY();
         mRlContent.setLayoutParams(layParamsTxt);
@@ -234,13 +225,12 @@ public class DrawTextView extends RelativeLayout implements
                 mVOutside.setVisibility(View.GONE);
                 mEtTextEdit.setVisibility(View.GONE);
                 mTvTextEdit.setVisibility(View.VISIBLE);
-                mRlText.setBackgroundResource(
-                        R.color.transparent);
+                mRlText.setBackgroundResource(R.color.transparent);
                 mBtTextEdit.setVisibility(View.GONE);
                 mBtTextDelete.setVisibility(View.GONE);
                 break;
             case TEXT_EDIT:
-                mVOutside.setBackgroundResource(R.color.white);
+                mVOutside.setBackgroundResource(R.color.default_font_color);
                 mVOutside.setVisibility(View.VISIBLE);
                 mEtTextEdit.setVisibility(View.VISIBLE);
                 mTvTextEdit.setVisibility(View.GONE);
@@ -266,7 +256,6 @@ public class DrawTextView extends RelativeLayout implements
             default:
                 break;
         }
-        //Log.d("gpy", "文字宽：" + mRlText.getHeight());
         if (mDrawPoint.getDrawText().getStatus() != currentStatus) {
             mDrawPoint.getDrawText().setStatus(currentStatus);
             if (null != mCallBackListener && currentStatus != TEXT_EDIT) {
@@ -277,12 +266,11 @@ public class DrawTextView extends RelativeLayout implements
     }
 
     /**
-     * 文字编辑完成
+     * finish text edit
      *
-     * @param isSave 是否保存
+     * @param isSave Save or don't save
      */
     public void afterEdit(boolean isSave) {
-        Log.d("gpy", "要保存的文字：" + mEtTextEdit.getText().toString());
         if (isSave) {
             mDrawPoint.getDrawText().setStr(mEtTextEdit.getText().toString());
         }
@@ -315,13 +303,10 @@ public class DrawTextView extends RelativeLayout implements
 
     private void showSoftKeyBoard(final EditText et) {
         et.requestFocus();
-        et.post(new Runnable() {
-            @Override
-            public void run() {
-                // 弹出输入法
-                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(et, InputMethodManager.RESULT_UNCHANGED_SHOWN);
-            }
+        et.post(() -> {
+            // Pop-up input method
+            InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(et, InputMethodManager.RESULT_UNCHANGED_SHOWN);
         });
     }
 
@@ -329,14 +314,14 @@ public class DrawTextView extends RelativeLayout implements
         if (mContext == null || mEtTextEdit == null) {
             return;
         }
-        // 隐藏输入法
+        // Hide input method
         ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(mEtTextEdit.getWindowToken(), 0);
     }
 
     public interface CallBackListener {
         /**
-         * 更新文字属性
+         * update text prop
          */
         void onUpdate(DrawPoint drawPoint);
     }

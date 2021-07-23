@@ -27,38 +27,65 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * 存储空间工具类
- *
+ * The util for store project. </br>
+ * Currently,the project can export to ".wb" file or save as a png photo.
  */
 public class StoreUtil {
-    public static final String CACHE_DIR = "WhiteBoard";
+    /**
+     * the folder name for root dir  <br>
+     * like: "/sdcard/{#ROOT_FOLDER}/"
+     *
+     */
+    public static final String ROOT_FOLDER = "WhiteBoard";
+
     private static final String TAG = "StoreUtil";
     private static final String CHARSET = "UTF-8";
-    private static final String CACHE_DIR_PHOTO = "photo";
+
+    /**
+     * The dir to save photo.
+     */
+    private static final String PHOTO_DIR = "photo";
+
+    /**
+     * photo format.
+     */
     private static final String PHOTO_FORMAT_PNG = ".png";
-    private static final String CACHE_DIR_WB = "wb";
+
+    /**
+     * default dir for saving wb projects.
+     */
+    private static final String PROJECT_DIR = "wb";
+
+    /**
+     * project ext.
+     */
     private static final String WB_FORMAT = ".wb";
+
+    /**
+     * default file name.
+     */
+    private static final String projectName = UUID.randomUUID().toString();
 
     /**
      * 获取保存路径
      */
     public static String getPhotoSavePath() {
-        return getPhotoPath() + File.separator + UUID.randomUUID().toString() + PHOTO_FORMAT_PNG;
+        return getPhotoPath() + File.separator + projectName + PHOTO_FORMAT_PNG;
     }
 
     public static String getPhotoPath() {
-        return SdCardStatus.getDefaulstCacheDirInSdCard() + File.separator + CACHE_DIR_PHOTO;
+        return SdCardStatus.getDefaultCacheDirInSdcard() + File.separator + PHOTO_DIR;
     }
 
     /**
      * 获取保存路径
      */
     public static String getWbSavePath() {
-        return getWbPath() + File.separator + UUID.randomUUID().toString() + WB_FORMAT;
+        return getWbPath() + File.separator + projectName + WB_FORMAT;
     }
 
     public static String getWbPath() {
-        return SdCardStatus.getDefaulstCacheDirInSdCard() + File.separator + CACHE_DIR_WB;
+        return SdCardStatus.getDefaultCacheDirInSdcard() + File.separator + PROJECT_DIR;
     }
 
     /**
@@ -81,7 +108,7 @@ public class StoreUtil {
         StoreUtil.write(strJson, getWbSavePath());
         convertWhiteBoardPoints(whiteBoardPoints);
         OperationUtils.getInstance().setWhiteBoardPoints(whiteBoardPoints);
-        ToastUtils.showToast(AppContextUtil.getContext(), AppContextUtil.getContext().getString(R.string.white_board_save_sucess));
+        ToastUtils.showToast(AppContextUtil.getContext(), AppContextUtil.getContext().getString(R.string.white_board_save_success));
     }
 
     /**
@@ -163,7 +190,7 @@ public class StoreUtil {
                 try {
                     outStream = new FileOutputStream(toFile);
                 } catch (FileNotFoundException e) {
-                    Log.d(TAG, "FileNotFoundException：" + e.getMessage());
+                    Log.e(TAG, "FileNotFoundException：" + e.getMessage());
                     outStream = null;
                 } finally {
                     if (null != outStream) {
@@ -176,7 +203,7 @@ public class StoreUtil {
                             try {
                                 outStream.close();
                             } catch (IOException e) {
-                                Log.d(TAG, "IOException" + e.getMessage());
+                                Log.e(TAG, "IOException" + e.getMessage());
                             }
                         }
                     }
@@ -198,8 +225,7 @@ public class StoreUtil {
                 if (len > 0) {
                     byte[] buf = new byte[len];
                     fis.read(buf);
-                    String string = new String(buf, CHARSET);
-                    return string;
+                    return new String(buf, CHARSET);
                 }
             } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();

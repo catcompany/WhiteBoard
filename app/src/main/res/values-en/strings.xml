@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">White Board</string>
+    <string name="white_board_name">White Board</string>
+    <string name="white_board_export">Export</string>
+    <string name="white_board_save">Save</string>
+    <string name="white_board_pen">Pen Settings</string>
+    <string name="white_board_text">Text Settings</string>
+    <string name="white_board_text_hint">Double click to modify</string>
+    <string name="white_board_eraser">Rubber</string>
+    <string name="white_board_eraser_clear">Clear all</string>
+    <string name="white_board_export_tip">Export successfully, the page has been saved to %1$s</string>
+    <string name="white_board_export_fail">Export failed,please try again later!</string>
+    <string name="white_board_save_success">Save successfully!</string>
+    <string name="app_logout">Continue to press the return key to exit</string>
+    <string name="app_list">Project List</string>
+    <string name="app_list_loading">Loading…</string>
+    <string name="no_permission">Without storage permission, some functions may not be available.</string>
+    <string name="list_is_null">The list is empty, Cick on the upper right corner ➕ to create a new project</string>
+</resources>

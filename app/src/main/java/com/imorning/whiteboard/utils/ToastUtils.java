@@ -4,15 +4,27 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
- * Created by gpy on 2016/4/11.
+ * A simple toast utils.
+ *
+ * @author iMorning
  */
 public class ToastUtils {
 
-    public static void showToast(Context context, String string) {
-        Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
+    /**
+     * show toast for a msg msg
+     * @param context The context
+     * @param msg message
+     */
+    public static void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showToast(Context context, int intStr) {
-        Toast.makeText(context, intStr, Toast.LENGTH_SHORT).show();
+    /**
+     * show toast from recourse
+     * @param context Context
+     * @param stringId The msg id in string.xml
+     */
+    public static void showToast(Context context, int stringId) {
+        Toast.makeText(context, stringId, Toast.LENGTH_SHORT).show();
     }
 }

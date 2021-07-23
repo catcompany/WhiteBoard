@@ -28,13 +28,16 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.imorning.whiteboard.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-
+/**
+ * This class is a custom view for float image button.
+ */
 public class FloatingActionButton extends FloatingImageButton {
 
     public static final int SIZE_NORMAL = 0;
@@ -53,6 +56,7 @@ public class FloatingActionButton extends FloatingImageButton {
     private float mShadowRadius;
     private float mShadowOffset;
     private int mDrawableSize;
+
     public FloatingActionButton(Context context) {
         this(context, null);
     }
@@ -221,8 +225,8 @@ public class FloatingActionButton extends FloatingImageButton {
 
         LayerDrawable layerDrawable = new LayerDrawable(
                 new Drawable[]{
-                        // TODO: 2021/7/23 a deprecated method
-                        getResources().getDrawable(mSize == SIZE_NORMAL ? R.drawable.fab_bg_normal : R.drawable.fab_bg_mini),
+                        ResourcesCompat.getDrawable(getResources(), mSize == SIZE_NORMAL ? R.drawable.fab_bg_normal : R.drawable.fab_bg_mini, null),
+                        //getResources().getDrawable(mSize == SIZE_NORMAL ? R.drawable.fab_bg_normal : R.drawable.fab_bg_mini),
                         createFillDrawable(strokeWidth),
                         createOuterStrokeDrawable(strokeWidth),
                         getIconDrawable()

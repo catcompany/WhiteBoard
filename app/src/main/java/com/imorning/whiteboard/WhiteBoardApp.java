@@ -12,7 +12,7 @@ public class WhiteBoardApp extends Application {
     public void onCreate() {
         super.onCreate();
         AppContextUtil.init(this);
-        SdCardStatus.init(StoreUtil.CACHE_DIR);
+        SdCardStatus.init(StoreUtil.ROOT_FOLDER);
         OperationUtils.getInstance().init();
     }
 }

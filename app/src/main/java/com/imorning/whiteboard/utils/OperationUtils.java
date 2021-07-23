@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 白板操作公共类
+ * The util for common operation
  *
- * @author gpy
  */
 
 public class OperationUtils {
@@ -47,19 +46,19 @@ public class OperationUtils {
     /**
      * 当前按钮点击
      */
-    public int mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_CLICK;
+    public int mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_CLICK;
     /**
      * 当前按钮点击
      */
-    public int mCurrentOPerationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
+    public int mCurrentOperationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
     /**
      * 当前按钮点击
      */
-    public int mCurrentOPerationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
+    public int mCurrentOperationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
     /**
      * 当前按钮点击
      */
-    public int mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
+    public int mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
     /**
      * 当前绘画类型：笔或者文字等
      */
@@ -105,10 +104,10 @@ public class OperationUtils {
         DISABLE = true;
         mCurrentIndex = 0;
         markId = 0;
-        mCurrentOPerationPen = WhiteBoardVariable.Operation.PEN_NORMAL;
-        mCurrentOPerationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
-        mCurrentOPerationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
-        mCurrentOPerationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
+        mCurrentOperationPen = WhiteBoardVariable.Operation.PEN_NORMAL;
+        mCurrentOperationColor = WhiteBoardVariable.Operation.COLOR_NORMAL;
+        mCurrentOperationText = WhiteBoardVariable.Operation.TEXT_NORMAL;
+        mCurrentOperationEraser = WhiteBoardVariable.Operation.ERASER_NORMAL;
         mCurrentDrawType = DRAW_PEN;
         mCurrentColor = WhiteBoardVariable.Color.ORANGE;
         mCurrentPenSize = WhiteBoardVariable.PenSize.MIDDLE;
