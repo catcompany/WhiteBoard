@@ -18,8 +18,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.ShapeDrawable.ShaderFactory;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.os.Build;
-import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -263,7 +261,7 @@ public class FloatingActionButton extends FloatingImageButton {
         if (mIconDrawable != null) {
             return mIconDrawable;
         } else if (mIcon != 0) {
-            return getResources().getDrawable(mIcon);
+            return ResourcesCompat.getDrawable(getResources(), mIcon, null);
         } else {
             return new ColorDrawable(Color.TRANSPARENT);
         }
@@ -380,7 +378,7 @@ public class FloatingActionButton extends FloatingImageButton {
         shapeDrawable.setShaderFactory(new ShaderFactory() {
             @Override
             public Shader resize(int width, int height) {
-                return new LinearGradient(width / 2, 0, width / 2, height,
+                return new LinearGradient(width / 2.0f, 0, width / 2.0f, height,
                         new int[]{topStrokeColor, topStrokeColorHalfTransparent, color, bottomStrokeColorHalfTransparent, bottomStrokeColor},
                         new float[]{0f, 0.2f, 0.5f, 0.8f, 1f},
                         TileMode.CLAMP
@@ -391,14 +389,9 @@ public class FloatingActionButton extends FloatingImageButton {
         return shapeDrawable;
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     private void setBackgroundCompat(Drawable drawable) {
-        if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-            setBackground(drawable);
-        } else {
-            setBackgroundDrawable(drawable);
-        }
+        setBackground(drawable);
     }
 
     @Override
