@@ -1,4 +1,4 @@
 DrawingBoard
 ============
 
-This project is forked from [DrawingBoard](https://github.com/leftthomas/DrawingBoard) .
+This project is based on [DrawingBoard](https://github.com/leftthomas/DrawingBoard) .
