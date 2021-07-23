@@ -5,9 +5,7 @@ import java.util.List;
 
 /**
  * 绘画存储-画笔路径(字符串格式，方便储存)
- * Created 2015-7-13 10:36:1
  *
- * @author gpy
  */
 public class DrawPenStr {
 
