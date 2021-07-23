@@ -1,6 +1,7 @@
 package com.imorning.whiteboard.activity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
-    ArrayList<String> filenames;
+    ArrayList<String> fileNames;
     ArrayList<String> filePaths;
     private ActivityMainBinding binding;
 
@@ -43,10 +44,10 @@ public class MainActivity extends BaseActivity {
         final File[] files = folder.listFiles();
         assert files != null;
         if (files.length > 0) {
-            filenames = new ArrayList<>();
+            fileNames = new ArrayList<>();
             filePaths = new ArrayList<>();
             for (File f : files) {
-                filenames.add(FileUtil.getFileName(f));
+                fileNames.add(FileUtil.getFileName(f));
                 filePaths.add(f.getAbsolutePath());
             }
             binding.mainNullListLayout.setVisibility(View.GONE);
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
     private class WbAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return filenames != null ? filenames.size() : 0;
+            return fileNames != null ? fileNames.size() : 0;
         }
 
         @Override
@@ -89,6 +90,7 @@ public class MainActivity extends BaseActivity {
             return 0;
         }
 
+        @SuppressLint("InflateParams")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             WbViewHolder holder = null;
@@ -100,7 +102,7 @@ public class MainActivity extends BaseActivity {
                     convertView.setTag(holder = new WbViewHolder(convertView));
                 }
                 if (holder != null) {
-                    holder.nWbName.setText(filenames.get(position));
+                    holder.nWbName.setText(fileNames.get(position));
                     convertView.setOnClickListener(v -> {
                         StoreUtil.readWhiteBoardPoints(filePaths.get(position));
                         Intent intent = new Intent(MainActivity.this, WhiteBoardActivity.class);
