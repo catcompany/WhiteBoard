@@ -1,4 +1,4 @@
 DrawingBoard
 ============
 
-This project is based on [Doodle](https://github.com/1993hzw/Doodle) .
+This project is based on [WhiteBoard](https://github.com/guanpy/WhiteBoard) .
