@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.imorning.whiteboard">
-    <!-- 从sdcard中读取数据的权限 -->
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 往sdcard中写入数据的权限 -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" /> <!-- For Android11 + -->
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <application
@@ -17,15 +20,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhiteBoard">
         <activity
-            android:name=".activity.WhiteBoardActivity"
-            android:exported="true"
-            android:screenOrientation="landscape" />
-        <activity
             android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="*"
                     android:mimeType="*/*"
@@ -38,6 +39,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.WhiteBoardActivity"
+            android:exported="true"
+            android:screenOrientation="userLandscape"/>
     </application>
 
 </manifest>

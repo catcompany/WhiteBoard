@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!--亮色模式-->
+    <color name="primary_black">#FF3E3E3E</color>
+    <color name="grey_3e">#FF3E3E3E</color>
+    <color name="orange">#FFFF6A00</color>
+    <color name="light_red">#FFF54983</color>
+    <color name="primary_purple">#FF663FDE</color>
+    <color name="green">#FF24A8A3</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
-
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorDivide">#DDDDDD</color>
-
-    <color name="default_font_color">#ffffff</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_50">#7f000000</color>
-    <color name="cover">#cc2c1670</color>
+
+    <color name="colorPrimary">#FF991124</color>
+    <color name="statusBarColor">#FF991124</color>
+    <color name="colorAccent">#FF180927</color>
+    <color name="navigationBarColor">#FF991124</color>
+    <color name="colorDivide">#FF180927</color>
+    <color name="textColor">#FF000000</color>
+    <color name="cover">#CC2C1670</color>
     <color name="black_semi_transparent">#B2000000</color>
-    <color name="primary_black">#3e3e3e</color>
-    <color name="grey_3e">#3e3e3e</color>
-    <color name="orange">#ff6a00</color>
-    <color name="light_red">#f54983</color>
-    <color name="primary_purple">#663fde</color>
-    <color name="green">#24a8a3</color>
-    <color name="white_board_drawtext_back">#f7f7f7</color>
+    <color name="white_board_draw_text_back">#FFF7F7F7</color>
+
 </resources>

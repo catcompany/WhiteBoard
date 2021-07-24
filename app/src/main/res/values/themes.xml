@@ -1,17 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.WhiteBoard" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/default_font_color</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
+    <style name="Theme.WhiteBoard" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 主题颜色。app的主要颜色，即整个屏幕和所有控件的主要颜色，首选颜色。-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- 状态栏的颜色-->
+        <item name="colorPrimaryVariant">@color/statusBarColor</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/statusBarColor</item>
+        <!-- 底部导航栏颜色-->
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+        <!-- 控制各个控件被选中时的颜色-->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- 字体颜色-->
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="Theme.WhiteBoardActivity" parent="Theme.AppCompat.Light">
+
     </style>
 
 
@@ -20,12 +24,12 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/font_40px</item>
-        <item name="android:textColor">@color/default_font_color</item>
+        <item name="android:textColor">@color/textColor</item>
     </style>
 
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>
-        <item name="android:textColor">@color/default_font_color</item>
+        <item name="android:textColor">@color/textColor</item>
     </style>
 
 </resources>

@@ -43,7 +43,9 @@ public class FloatingActionsMenu extends ViewGroup {
     private static final int ANIMATION_DURATION = 300;
     private static final float COLLAPSED_PLUS_ROTATION = 0f;
     private static final float EXPANDED_PLUS_ROTATION = 90f + 45f;
-
+    private static final Interpolator sExpandInterpolator = new OvershootInterpolator();
+    private static final Interpolator sCollapseInterpolator = new DecelerateInterpolator(3f);
+    private static final Interpolator sAlphaExpandInterpolator = new DecelerateInterpolator();
     private Drawable mAddButtonBackground;
     private float mAddButtonWidth;
     private float mAddButtonHeight;
@@ -54,15 +56,12 @@ public class FloatingActionsMenu extends ViewGroup {
     private int mAddButtonSize;
     private boolean mAddButtonStrokeVisible;
     private int mExpandDirection;
-
     private int mButtonSpacing;
     private int mLabelsMargin;
     private int mLabelsVerticalOffset;
-
     private boolean mExpanded;
-
-    private AnimatorSet mExpandAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
-    private AnimatorSet mCollapseAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
+    private final AnimatorSet mExpandAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
+    private final AnimatorSet mCollapseAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
     //  private AddFloatingActionButton mAddButton;
     private FloatingImageButton mAddButton;
     private RotatingDrawable mRotatingDrawable;
@@ -71,18 +70,11 @@ public class FloatingActionsMenu extends ViewGroup {
     private int mLabelsStyle;
     private int mLabelsPosition;
     private int mButtonsCount;
-
     private TouchDelegateGroup mTouchDelegateGroup;
     private OnFloatingActionsMenuUpdateListener mListener;
     private OnFloatingActionsMenuClickListener mClickListener;
 
-    public interface OnFloatingActionsMenuUpdateListener {
-        void onMenuExpanded();
-
-        void onMenuCollapsed();
-    }
-
-    public FloatingActionsMenu(Context context) {
+    public FloatingActionsMenu(Context context, int mLabelsMargin) {
         this(context, null);
     }
 
@@ -95,36 +87,34 @@ public class FloatingActionsMenu extends ViewGroup {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
-    public interface OnFloatingActionsMenuClickListener{
 
-        void addButtonLister();
-    }
-
-    public void  setOnFloatingActionsMenuClickListener(OnFloatingActionsMenuClickListener flLister){
+    public void setOnFloatingActionsMenuClickListener(OnFloatingActionsMenuClickListener flLister) {
         mClickListener = flLister;
     }
 
     /**
      * 在图片中间画圆环
-     * @param size  圆的半径
-     * @param color  圆的颜色
-     * */
-    public void drawRing(int color){
-       mAddButton.drawRing(WhiteBoardVariable.RingSize.LARRGE, color);
+     *
+     * @param color 圆的颜色
+     */
+    public void drawRing(int color) {
+        mAddButton.drawRing(WhiteBoardVariable.RingSize.LARRGE, color);
     }
+
     /**
      * 清除绘画
-     * */
-    public void clearDraw(){
+     */
+    public void clearDraw() {
         mAddButton.clearDraw();
     }
 
     /**
      * 切换控制按钮背景图
-     * */
-    public void setAddButtonBackground(int drawable){
-            mAddButton.setBackgroundResource(drawable);
+     */
+    public void setAddButtonBackground(int drawable) {
+        mAddButton.setBackgroundResource(drawable);
     }
+
     /**
      * dip转px
      */
@@ -132,8 +122,8 @@ public class FloatingActionsMenu extends ViewGroup {
         final float scale = AppContextUtil.getContext().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
     private void init(Context context, AttributeSet attributeSet) {
-//    mButtonSpacing = (int) (getResources().getDimension(R.dimen.fab_actions_spacing) - getResources().getDimension(R.dimen.fab_shadow_radius) - getResources().getDimension(R.dimen.fab_shadow_offset));
 
         mLabelsVerticalOffset = getResources().getDimensionPixelSize(R.dimen.fab_shadow_offset);
 
@@ -141,7 +131,7 @@ public class FloatingActionsMenu extends ViewGroup {
         setTouchDelegate(mTouchDelegateGroup);
 
         TypedArray attr = context.obtainStyledAttributes(attributeSet, R.styleable.FloatingActionsMenu, 0, 0);
-        mButtonSpacing =dip2px(attr.getDimension(R.styleable.FloatingActionsMenu_fab_buttonSpacing, 4));
+        mButtonSpacing = dip2px(attr.getDimension(R.styleable.FloatingActionsMenu_fab_buttonSpacing, 4));
         mAddButtonBackground = attr.getDrawable(R.styleable.FloatingActionsMenu_fab_addButtonBackground);
         mAddButtonWidth = attr.getDimension(R.styleable.FloatingActionsMenu_fab_addButtonWidth, 0);
         mAddButtonHeight = attr.getDimension(R.styleable.FloatingActionsMenu_fab_addButtonHeight, 0);
@@ -170,33 +160,6 @@ public class FloatingActionsMenu extends ViewGroup {
 
     private boolean expandsHorizontally() {
         return mExpandDirection == EXPAND_LEFT || mExpandDirection == EXPAND_RIGHT;
-    }
-
-    private static class RotatingDrawable extends LayerDrawable {
-        public RotatingDrawable(Drawable drawable) {
-            super(new Drawable[]{drawable});
-        }
-
-        private float mRotation;
-
-        @SuppressWarnings("UnusedDeclaration")
-        public float getRotation() {
-            return mRotation;
-        }
-
-        @SuppressWarnings("UnusedDeclaration")
-        public void setRotation(float rotation) {
-            mRotation = rotation;
-            invalidateSelf();
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
-            canvas.save();
-            canvas.rotate(mRotation, getBounds().centerX(), getBounds().centerY());
-            super.draw(canvas);
-            canvas.restore();
-        }
     }
 
     /**
@@ -248,9 +211,9 @@ public class FloatingActionsMenu extends ViewGroup {
         mAddButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null!=mClickListener){
+                if (null != mClickListener) {
                     mClickListener.addButtonLister();
-                }else{
+                } else {
                     toggle();
                 }
             }
@@ -479,63 +442,6 @@ public class FloatingActionsMenu extends ViewGroup {
         return super.checkLayoutParams(p);
     }
 
-    private static Interpolator sExpandInterpolator = new OvershootInterpolator();
-    private static Interpolator sCollapseInterpolator = new DecelerateInterpolator(3f);
-    private static Interpolator sAlphaExpandInterpolator = new DecelerateInterpolator();
-
-    private class LayoutParams extends ViewGroup.LayoutParams {
-
-        private ObjectAnimator mExpandDir = new ObjectAnimator();
-        private ObjectAnimator mExpandAlpha = new ObjectAnimator();
-        private ObjectAnimator mCollapseDir = new ObjectAnimator();
-        private ObjectAnimator mCollapseAlpha = new ObjectAnimator();
-        private boolean animationsSetToPlay;
-
-        public LayoutParams(ViewGroup.LayoutParams source) {
-            super(source);
-
-            mExpandDir.setInterpolator(sExpandInterpolator);
-            mExpandAlpha.setInterpolator(sAlphaExpandInterpolator);
-            mCollapseDir.setInterpolator(sCollapseInterpolator);
-            mCollapseAlpha.setInterpolator(sCollapseInterpolator);
-
-            mCollapseAlpha.setProperty(View.ALPHA);
-            mCollapseAlpha.setFloatValues(1f, 0f);
-
-            mExpandAlpha.setProperty(View.ALPHA);
-            mExpandAlpha.setFloatValues(0f, 1f);
-
-            switch (mExpandDirection) {
-                case EXPAND_UP:
-                case EXPAND_DOWN:
-                    mCollapseDir.setProperty(View.TRANSLATION_Y);
-                    mExpandDir.setProperty(View.TRANSLATION_Y);
-                    break;
-                case EXPAND_LEFT:
-                case EXPAND_RIGHT:
-                    mCollapseDir.setProperty(View.TRANSLATION_X);
-                    mExpandDir.setProperty(View.TRANSLATION_X);
-                    break;
-            }
-        }
-
-        public void setAnimationsTarget(View view) {
-            mCollapseAlpha.setTarget(view);
-            mCollapseDir.setTarget(view);
-            mExpandAlpha.setTarget(view);
-            mExpandDir.setTarget(view);
-
-            // Now that the animations have targets, set them to be played
-            if (!animationsSetToPlay) {
-                mCollapseAnimation.play(mCollapseAlpha);
-                mCollapseAnimation.play(mCollapseDir);
-                mExpandAnimation.play(mExpandAlpha);
-                mExpandAnimation.play(mExpandDir);
-                animationsSetToPlay = true;
-            }
-        }
-    }
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -544,7 +450,6 @@ public class FloatingActionsMenu extends ViewGroup {
         mButtonsCount = getChildCount();
 
     }
-
 
     public void collapse() {
         if (mExpanded) {
@@ -610,7 +515,57 @@ public class FloatingActionsMenu extends ViewGroup {
         }
     }
 
+    public interface OnFloatingActionsMenuUpdateListener {
+        void onMenuExpanded();
+
+        void onMenuCollapsed();
+    }
+
+    public interface OnFloatingActionsMenuClickListener {
+
+        void addButtonLister();
+    }
+
+    private static class RotatingDrawable extends LayerDrawable {
+        private float mRotation;
+
+        public RotatingDrawable(Drawable drawable) {
+            super(new Drawable[]{drawable});
+        }
+
+        @SuppressWarnings("UnusedDeclaration")
+        public float getRotation() {
+            return mRotation;
+        }
+
+        @SuppressWarnings("UnusedDeclaration")
+        public void setRotation(float rotation) {
+            mRotation = rotation;
+            invalidateSelf();
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            canvas.save();
+            canvas.rotate(mRotation, getBounds().centerX(), getBounds().centerY());
+            super.draw(canvas);
+            canvas.restore();
+        }
+    }
+
     public static class SavedState extends BaseSavedState {
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
         public boolean mExpanded;
 
         public SavedState(Parcelable parcel) {
@@ -627,18 +582,58 @@ public class FloatingActionsMenu extends ViewGroup {
             super.writeToParcel(out, flags);
             out.writeInt(mExpanded ? 1 : 0);
         }
+    }
 
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+    private class LayoutParams extends ViewGroup.LayoutParams {
 
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
+        private final ObjectAnimator mExpandDir = new ObjectAnimator();
+        private final ObjectAnimator mExpandAlpha = new ObjectAnimator();
+        private final ObjectAnimator mCollapseDir = new ObjectAnimator();
+        private final ObjectAnimator mCollapseAlpha = new ObjectAnimator();
+        private boolean animationsSetToPlay;
+
+        public LayoutParams(ViewGroup.LayoutParams source) {
+            super(source);
+
+            mExpandDir.setInterpolator(sExpandInterpolator);
+            mExpandAlpha.setInterpolator(sAlphaExpandInterpolator);
+            mCollapseDir.setInterpolator(sCollapseInterpolator);
+            mCollapseAlpha.setInterpolator(sCollapseInterpolator);
+
+            mCollapseAlpha.setProperty(View.ALPHA);
+            mCollapseAlpha.setFloatValues(1f, 0f);
+
+            mExpandAlpha.setProperty(View.ALPHA);
+            mExpandAlpha.setFloatValues(0f, 1f);
+
+            switch (mExpandDirection) {
+                case EXPAND_UP:
+                case EXPAND_DOWN:
+                    mCollapseDir.setProperty(View.TRANSLATION_Y);
+                    mExpandDir.setProperty(View.TRANSLATION_Y);
+                    break;
+                case EXPAND_LEFT:
+                case EXPAND_RIGHT:
+                    mCollapseDir.setProperty(View.TRANSLATION_X);
+                    mExpandDir.setProperty(View.TRANSLATION_X);
+                    break;
             }
+        }
 
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
+        public void setAnimationsTarget(View view) {
+            mCollapseAlpha.setTarget(view);
+            mCollapseDir.setTarget(view);
+            mExpandAlpha.setTarget(view);
+            mExpandDir.setTarget(view);
+
+            // Now that the animations have targets, set them to be played
+            if (!animationsSetToPlay) {
+                mCollapseAnimation.play(mCollapseAlpha);
+                mCollapseAnimation.play(mCollapseDir);
+                mExpandAnimation.play(mExpandAlpha);
+                mExpandAnimation.play(mExpandDir);
+                animationsSetToPlay = true;
             }
-        };
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.imorning.whiteboard.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -88,7 +89,6 @@ public class DrawPenView extends View {
      * 初始化画笔
      */
     private void initPaint() {
-
         mPaint = new Paint();
         mPaint.setAntiAlias(true);//是否使用抗锯齿功能,会消耗较大资源，绘制图形速度会变慢
         mPaint.setDither(true);// 设定是否使用图像抖动处理，会使绘制出来的图片颜色更加平滑和饱满，图像更加清晰
@@ -147,7 +147,7 @@ public class DrawPenView extends View {
     public void onDraw(Canvas canvas) {
 
         canvas.drawColor(mContext.getResources().getColor(R.color.transparent));
-        int nCanvasHeight = canvas.getHeight();
+        int nCanvasHeight = getHeight();
         int nBitmapHeight = mBottomBitmap.getHeight();
         mBottomBitmapDrawHeight = (nCanvasHeight - nBitmapHeight) / 2;
         canvas.drawBitmap(mBottomBitmap, 0, mBottomBitmapDrawHeight, mBitmapPaint);
@@ -158,6 +158,7 @@ public class DrawPenView extends View {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (OperationUtils.getInstance().DISABLE && (OperationUtils.getInstance().mCurrentDrawType == OperationUtils.DRAW_PEN || OperationUtils.getInstance().mCurrentDrawType == OperationUtils.DRAW_ERASER)) {

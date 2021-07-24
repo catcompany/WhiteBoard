@@ -1,5 +1,6 @@
 package com.imorning.whiteboard.widget;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
@@ -60,35 +61,34 @@ public class DrawTextLayout extends FrameLayout {
         showPoints();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (OperationUtils.getInstance().mCurrentDrawType == OperationUtils.DRAW_TEXT&&OperationUtils.getInstance().DISABLE) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    float moveX =  event.getX();
-                    float moveY =  event.getY();
-                    if(getHeight()-moveY<dip2px(MARGIN_BOTTOM)){
-                        moveY = moveY - dip2px(MARGIN_BOTTOM);
-                    }
-                    if(getWidth()-moveX<dip2px(MARGIN_RIGHT)){
-                        moveX = moveX - dip2px(MARGIN_RIGHT);
-                    }
-                    // Log.d("添加文字", "-" + moveX + "," + moveY);
-                    DrawTextPoint ip = new DrawTextPoint();
-                    ip.setX(moveX);
-                    ip.setY(moveY);
-                    ip.setColor(OperationUtils.getInstance().mCurrentColor);
-                    ip.setStatus(DrawTextView.TEXT_EDIT);
-                    ip.setIsVisible(true);
-                    ip.setId(OperationUtils.getInstance().getNewMarkId());
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                float moveX = event.getX();
+                float moveY = event.getY();
+                if (getHeight() - moveY < dip2px(MARGIN_BOTTOM)) {
+                    moveY = moveY - dip2px(MARGIN_BOTTOM);
+                }
+                if (getWidth() - moveX < dip2px(MARGIN_RIGHT)) {
+                    moveX = moveX - dip2px(MARGIN_RIGHT);
+                }
+                // Log.d("添加文字", "-" + moveX + "," + moveY);
+                DrawTextPoint ip = new DrawTextPoint();
+                ip.setX(moveX);
+                ip.setY(moveY);
+                ip.setColor(OperationUtils.getInstance().mCurrentColor);
+                ip.setStatus(DrawTextView.TEXT_EDIT);
+                ip.setIsVisible(true);
+                ip.setId(OperationUtils.getInstance().getNewMarkId());
 
-                    DrawPoint drawPoint = new DrawPoint();
-                    drawPoint.setType(OperationUtils.DRAW_TEXT);
-                    drawPoint.setDrawText(ip);
-                    // OperationUtils.getInstance().getSavePoints().add(drawPoint);
-                    showPoints();
-                    showNewPoint(drawPoint);
-                    break;
+                DrawPoint drawPoint = new DrawPoint();
+                drawPoint.setType(OperationUtils.DRAW_TEXT);
+                drawPoint.setDrawText(ip);
+                // OperationUtils.getInstance().getSavePoints().add(drawPoint);
+                showPoints();
+                showNewPoint(drawPoint);
             }
         }
         return super.onTouchEvent(event);
@@ -96,7 +96,7 @@ public class DrawTextLayout extends FrameLayout {
 
     public void showPoints() {
         int size = OperationUtils.getInstance().getSavePoints().size();
-        Log.d("gpy", "显示文字列表--"+size);
+        //Log.d("gpy", "显示文字列表--"+size);
         this.removeAllViews();
         if(size==0){
             return;

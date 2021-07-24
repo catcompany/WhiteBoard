@@ -42,17 +42,17 @@ public class MainActivity extends BaseActivity {
             return;
         }
         final File[] files = folder.listFiles();
-        assert files != null;
-        if (files.length > 0) {
-            fileNames = new ArrayList<>();
-            filePaths = new ArrayList<>();
-            for (File f : files) {
-                fileNames.add(FileUtil.getFileName(f));
-                filePaths.add(f.getAbsolutePath());
+        if (files != null) {
+            if (files.length > 0) {
+                fileNames = new ArrayList<>();
+                filePaths = new ArrayList<>();
+                for (File f : files) {
+                    fileNames.add(FileUtil.getFileName(f));
+                    filePaths.add(f.getAbsolutePath());
+                }
+                binding.mainNullListLayout.setVisibility(View.GONE);
             }
-            binding.mainNullListLayout.setVisibility(View.GONE);
         }
-
     }
 
     private void initView() {

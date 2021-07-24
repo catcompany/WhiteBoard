@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorDivide">#DDDDDD</color>
-
-    <color name="default_font_color">#000000</color>
-    <color name="cover">#cc2c1670</color>
-    <color name="black_semi_transparent">#B2000000</color>
-    <color name="primary_black">#3e3e3e</color>
-    <color name="grey_3e">#3e3e3e</color>
-    <color name="orange">#ff6a00</color>
-    <color name="light_red">#f54983</color>
-    <color name="primary_purple">#663fde</color>
-    <color name="green">#24a8a3</color>
-    <color name="white_board_drawtext_back">#f7f7f7</color>
+    <!--暗色模式-->
+    <color name="colorPrimary">#FF190322</color>
+    <color name="statusBarColor">#FF190322</color>
+    <color name="colorAccent">#FF1E88E5</color>
+    <color name="navigationBarColor">#01991124</color>
+    <color name="colorDivide">#FF190322</color>
+    <color name="textColor">#FFFFFFFF</color>
 </resources>

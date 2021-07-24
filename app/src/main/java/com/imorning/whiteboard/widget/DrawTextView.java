@@ -230,7 +230,7 @@ public class DrawTextView extends RelativeLayout implements
                 mBtTextDelete.setVisibility(View.GONE);
                 break;
             case TEXT_EDIT:
-                mVOutside.setBackgroundResource(R.color.default_font_color);
+                mVOutside.setBackgroundResource(R.color.textColor);
                 mVOutside.setVisibility(View.VISIBLE);
                 mEtTextEdit.setVisibility(View.VISIBLE);
                 mTvTextEdit.setVisibility(View.GONE);
