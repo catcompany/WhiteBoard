@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -230,7 +229,7 @@ public class DrawTextView extends RelativeLayout implements
                 mBtTextDelete.setVisibility(View.GONE);
                 break;
             case TEXT_EDIT:
-                mVOutside.setBackgroundResource(R.color.textColor);
+                mVOutside.setBackgroundResource(R.color.colorText);
                 mVOutside.setVisibility(View.VISIBLE);
                 mEtTextEdit.setVisibility(View.VISIBLE);
                 mTvTextEdit.setVisibility(View.GONE);

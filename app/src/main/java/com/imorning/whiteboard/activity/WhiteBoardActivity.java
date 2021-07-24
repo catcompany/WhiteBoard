@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 
 import com.github.guanpy.library.ann.ReceiveEvents;
 import com.imorning.whiteboard.R;
@@ -38,16 +37,9 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initView() {
-        //Hide action bar
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
-        //Hide status bar
+        //Hide status bar and make app full screen
         //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
         binding = ActivityWhiteBoardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

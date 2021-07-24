@@ -10,14 +10,17 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="transparent">#00000000</color>
-    <color name="transparent_50">#7f000000</color>
+    <color name="transparent_50">#7F000000</color>
 
-    <color name="colorPrimary">#FF991124</color>
-    <color name="statusBarColor">#FF991124</color>
-    <color name="colorAccent">#FF180927</color>
-    <color name="navigationBarColor">#FF991124</color>
-    <color name="colorDivide">#FF180927</color>
-    <color name="textColor">#FF000000</color>
+    <color name="colorPrimary">#FF2196F3</color>
+    <color name="colorStatusBar">#FF1976D2</color>
+    <color name="colorAccent">#FF03A9F4</color>
+    <color name="colorNavigationBar">#FF2196F3</color>
+    <color name="colorWindowBackground">#FFFFFFFF</color>
+
+    <color name="colorDivide">#FFBDBDBD</color>
+    <color name="colorText">#FF212121</color>
+
     <color name="cover">#CC2C1670</color>
     <color name="black_semi_transparent">#B2000000</color>
     <color name="white_board_draw_text_back">#FFF7F7F7</color>
