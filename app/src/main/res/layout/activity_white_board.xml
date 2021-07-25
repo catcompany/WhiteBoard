@@ -13,16 +13,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/cover" />
+            android:background="@color/colorPrimary" />
 
     </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/rl_head"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp">
+        android:layout_height="@dimen/navigation_bar_height"
+        android:layout_marginStart="@dimen/white_board_margin"
+        android:layout_marginEnd="@dimen/white_board_margin">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_white_board_back"
@@ -45,13 +45,16 @@
             android:focusable="true"
             android:scaleType="centerCrop"
             android:src="@drawable/common_cancel_selector"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_white_board_head"
-            style="@style/HeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:text="@string/white_board_name" />
+            android:gravity="center"
+            android:text="@string/new_project"
+            android:textSize="@dimen/text_appbar" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_white_board_confirm"
@@ -64,7 +67,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/common_confirm_selector"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -102,9 +105,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_head"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp">
+        android:layout_marginStart="@dimen/white_board_margin"
+        android:layout_marginEnd="@dimen/white_board_margin"
+        android:layout_marginBottom="@dimen/white_board_margin_bottom">
 
         <ScrollView
             android:id="@+id/sv_content"
@@ -123,7 +126,8 @@
                 <com.imorning.whiteboard.widget.DrawPenView
                     android:id="@+id/db_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:clickable="false" />
 
                 <com.imorning.whiteboard.widget.DrawTextLayout
                     android:id="@+id/dt_view"

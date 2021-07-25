@@ -74,7 +74,6 @@ public class DrawTextLayout extends FrameLayout {
                 if (getWidth() - moveX < dip2px(MARGIN_RIGHT)) {
                     moveX = moveX - dip2px(MARGIN_RIGHT);
                 }
-                // Log.d("添加文字", "-" + moveX + "," + moveY);
                 DrawTextPoint ip = new DrawTextPoint();
                 ip.setX(moveX);
                 ip.setY(moveY);
@@ -96,7 +95,6 @@ public class DrawTextLayout extends FrameLayout {
 
     public void showPoints() {
         int size = OperationUtils.getInstance().getSavePoints().size();
-        //Log.d("gpy", "显示文字列表--"+size);
         this.removeAllViews();
         if(size==0){
             return;
@@ -108,7 +106,6 @@ public class DrawTextLayout extends FrameLayout {
                         dp, mCallBackListener);
                 dw.setTag(i);
                 this.addView(dw);
-//                }
             }
         }
     }
@@ -128,18 +125,17 @@ public class DrawTextLayout extends FrameLayout {
             }
     }
 
-    private DrawTextView.CallBackListener mCallBackListener = new  DrawTextView.CallBackListener() {
-
-        @Override
-        public void onUpdate(DrawPoint drawPoint) {
-            updatePoint(drawPoint);
-            showPoints();
-        }
-
+    private final DrawTextView.CallBackListener mCallBackListener = drawPoint -> {
+        updatePoint(drawPoint);
+        showPoints();
     };
 
+    /**
+     * 修改标注
+     * @param drawPoint 标注点位置
+     */
     private void updatePoint(DrawPoint drawPoint) {
-        Log.d("修改标注", "-" + drawPoint.getDrawText().getX() + "," + drawPoint.getDrawText().getY());
+        //Log.d("修改标注", "-" + drawPoint.getDrawText().getX() + "," + drawPoint.getDrawText().getY());
         int size = OperationUtils.getInstance().getSavePoints().size();
         for (int i = size - 1; i >= 0; i--) {
             DrawPoint temp = OperationUtils.getInstance().getSavePoints().get(i);
@@ -156,7 +152,10 @@ public class DrawTextLayout extends FrameLayout {
 
 
     }
-    /**设置文字风格：下划线、粗体、斜体等*/
+
+    /**
+     * 设置文字风格：下划线、粗体、斜体等
+     */
     public void setTextStyle(int changeStyle){
         int size = OperationUtils.getInstance().getSavePoints().size();
         if(size==0){
@@ -181,7 +180,10 @@ public class DrawTextLayout extends FrameLayout {
             showPoints();
         }
     }
-    /**设置文字颜色*/
+
+    /**
+     * 设置文字颜色
+     */
     public void setTextColor(){
         int size = OperationUtils.getInstance().getSavePoints().size();
         if(size==0){

@@ -32,11 +32,12 @@
 
     <dimen name="fab_actions_spacing">16dp</dimen>
     <dimen name="fab_labels_margin">8dp</dimen>
-    
+
     <!--MD规范-->
     <dimen name="status_bar_height">24dp</dimen>
     <dimen name="appbar_min_height">56dp</dimen>
     <dimen name="navigation_bar_height">48dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
     <dimen name="floating_button_size">56dp</dimen>
     <!--屏幕左右对齐基线-->
     <dimen name="padding_baseline">16dp</dimen>
@@ -47,4 +48,9 @@
     <dimen name="text_appbar">20sp</dimen>
     <dimen name="text_title_large">24sp</dimen>
 
+    <dimen name="divider_height">1dp</dimen>
+
+    <!-- 画板距离周围的界限-->
+    <dimen name="white_board_margin">8dp</dimen>
+    <dimen name="white_board_margin_bottom">8dp</dimen>
 </resources>

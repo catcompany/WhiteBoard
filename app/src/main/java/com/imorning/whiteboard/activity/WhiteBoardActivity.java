@@ -14,20 +14,25 @@ import androidx.annotation.Nullable;
 
 import com.github.guanpy.library.ann.ReceiveEvents;
 import com.imorning.whiteboard.R;
+import com.imorning.whiteboard.WhiteBoardApp;
 import com.imorning.whiteboard.bean.DrawPoint;
 import com.imorning.whiteboard.databinding.ActivityWhiteBoardBinding;
 import com.imorning.whiteboard.utils.Events;
 import com.imorning.whiteboard.utils.OperationUtils;
 import com.imorning.whiteboard.utils.StoreUtil;
+import com.imorning.whiteboard.utils.ToastUtils;
 import com.imorning.whiteboard.utils.WhiteBoardVariable;
 import com.imorning.whiteboard.widget.DrawTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WhiteBoardActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "WhiteBoardActivity";
     private ActivityWhiteBoardBinding binding;
+
+    private long mBackPressedTime;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -37,12 +42,17 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initView() {
-        //Hide status bar and make app full screen
-        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        // Hide both the navigation bar and the status bar.
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         binding = ActivityWhiteBoardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        if (WhiteBoardApp.getFileTitle() != null) {
+            binding.tvWhiteBoardHead.setText(WhiteBoardApp.getFileTitle());
+        }else{
+            binding.tvWhiteBoardHead.setText(R.string.new_project);
+        }
         changePenBack();
         changeColorBack();
         changeEraserBack();
@@ -393,14 +403,14 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
      * 撤销
      */
     private void undo() {
-        int size = OperationUtils.getInstance().getSavePoints().size();
-        if (size != 0) {
-            OperationUtils.getInstance().getDeletePoints().add(OperationUtils.getInstance().getSavePoints().get(size - 1));
-            OperationUtils.getInstance().getSavePoints().remove(size - 1);
-            size = OperationUtils.getInstance().getDeletePoints().size();
-            if (OperationUtils.getInstance().getDeletePoints().get(size - 1).getType() == OperationUtils.DRAW_PEN) {
+        AtomicInteger size = new AtomicInteger(OperationUtils.getInstance().getSavePoints().size());
+        if (size.get() != 0) {
+            OperationUtils.getInstance().getDeletePoints().add(OperationUtils.getInstance().getSavePoints().get(size.get() - 1));
+            OperationUtils.getInstance().getSavePoints().remove(size.get() - 1);
+            size.set(OperationUtils.getInstance().getDeletePoints().size());
+            if (OperationUtils.getInstance().getDeletePoints().get(size.get() - 1).getType() == OperationUtils.DRAW_PEN) {
                 binding.dbView.undo();
-            } else if (OperationUtils.getInstance().getDeletePoints().get(size - 1).getType() == OperationUtils.DRAW_TEXT) {
+            } else if (OperationUtils.getInstance().getDeletePoints().get(size.get() - 1).getType() == OperationUtils.DRAW_TEXT) {
                 binding.dtView.undo();
             }
             showUndoRedo();
@@ -412,14 +422,14 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
      * 重做
      */
     private void redo() {
-        int size = OperationUtils.getInstance().getDeletePoints().size();
-        if (size != 0) {
-            OperationUtils.getInstance().getSavePoints().add(OperationUtils.getInstance().getDeletePoints().get(size - 1));
-            OperationUtils.getInstance().getDeletePoints().remove(size - 1);
-            size = OperationUtils.getInstance().getSavePoints().size();
-            if (OperationUtils.getInstance().getSavePoints().get(size - 1).getType() == OperationUtils.DRAW_PEN) {
+        AtomicInteger size = new AtomicInteger(OperationUtils.getInstance().getDeletePoints().size());
+        if (size.get() != 0) {
+            OperationUtils.getInstance().getSavePoints().add(OperationUtils.getInstance().getDeletePoints().get(size.get() - 1));
+            OperationUtils.getInstance().getDeletePoints().remove(size.get() - 1);
+            size.set(OperationUtils.getInstance().getSavePoints().size());
+            if (OperationUtils.getInstance().getSavePoints().get(size.get() - 1).getType() == OperationUtils.DRAW_PEN) {
                 binding.dbView.redo();
-            } else if (OperationUtils.getInstance().getSavePoints().get(size - 1).getType() == OperationUtils.DRAW_TEXT) {
+            } else if (OperationUtils.getInstance().getSavePoints().get(size.get() - 1).getType() == OperationUtils.DRAW_TEXT) {
                 binding.dtView.redo();
             }
             showUndoRedo();
@@ -496,6 +506,7 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case WhiteBoardVariable.Operation.TEXT_CLICK:
+                ToastUtils.showToast(this, "Click...");
             case WhiteBoardVariable.Operation.ERASER_CLICK:
                 switch (OperationUtils.getInstance().mCurrentOperationPen) {
                     case WhiteBoardVariable.Operation.PEN_NORMAL:
@@ -720,7 +731,6 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
             Uri uri = Uri.fromFile(file);
             intent.setData(uri);
             sendBroadcast(intent);
-
             showMessage(getString(R.string.white_board_export_tip, fileName));
         } catch (Exception e) {
             showMessage(getString(R.string.white_board_export_fail));
@@ -730,7 +740,17 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
+        final long mCurrentTime = System.currentTimeMillis();
+        if (mCurrentTime - this.mBackPressedTime > 1000) {
+            ToastUtils.showToast(getApplicationContext(), R.string.app_logout);
+            this.mBackPressedTime = mCurrentTime;
+            return;
+        }
+        WhiteBoardApp.setFilePath(null);
+        WhiteBoardApp.setFileTitle(null);
+        WhiteBoardApp.setIsModified(false);
         super.onBackPressed();
+        finish();
     }
 
     @ReceiveEvents(name = Events.WHITE_BOARD_TEXT_EDIT)

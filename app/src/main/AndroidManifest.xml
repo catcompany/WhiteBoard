@@ -19,34 +19,38 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhiteBoard">
-        <activity
-            android:name=".activity.UiActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.wb"
                     android:scheme="file" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.WhiteBoardActivity"
             android:exported="true"
             android:screenOrientation="userLandscape" />
+        <activity
+            android:name=".activity.UiActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

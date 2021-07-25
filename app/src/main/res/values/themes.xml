@@ -14,17 +14,11 @@
         <item name="android:textColor">@color/colorText</item>
         <!-- 窗口背景色-->
         <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <!--RecyclerView的分割线-->
+        <item name="android:listDivider">@drawable/recyclerview_divider_bg</item>
 
     </style>
 
-
-    <style name="HeaderTextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_40px</item>
-        <item name="android:textColor">@color/colorText</item>
-    </style>
 
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>

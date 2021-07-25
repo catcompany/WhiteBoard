@@ -115,9 +115,9 @@ public class StoreUtil {
      * 读取白板集
      */
     public static void readWhiteBoardPoints(String filePath) {
-        String strJson = StoreUtil.read(filePath);
-        if (!TextUtils.isEmpty(strJson)) {
-            WhiteBoardPoints whiteBoardPoints = new Gson().fromJson(strJson, WhiteBoardPoints.class);
+        String jsonData = StoreUtil.read(filePath);
+        if (!TextUtils.isEmpty(jsonData)) {
+            WhiteBoardPoints whiteBoardPoints = new Gson().fromJson(jsonData, WhiteBoardPoints.class);
             convertWhiteBoardPoints(whiteBoardPoints);
             OperationUtils.getInstance().setWhiteBoardPoints(whiteBoardPoints);
         }

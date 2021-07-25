@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--暗色模式-->
-    <color name="colorPrimary">#FF0096F3</color>
+    <color name="colorPrimary">#FF190322</color>
     <color name="colorStatusBar">#FF190322</color>
     <color name="colorAccent">#FF1E88E5</color>
     <color name="colorNavigationBar">#01991124</color>
-    <color name="colorDivide">#FFE8EAF6</color>
     <color name="colorText">#FFF9F9F9</color>
     <color name="colorWindowBackground">#FF000000</color>
+    <color name="colorDivide">#FFF00000</color>
 
 
 </resources>

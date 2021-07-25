@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">White Board</string>
-    <string name="white_board_name">White Board</string>
     <string name="white_board_export">Export</string>
     <string name="white_board_save">Save</string>
     <string name="white_board_pen">Pen Settings</string>
@@ -16,5 +15,6 @@
     <string name="app_list">Project List</string>
     <string name="app_list_loading">Loading…</string>
     <string name="no_permission">Without storage permission, some functions may not be available.</string>
-    <string name="list_is_null">The list is empty, Cick on the upper right corner ➕ to create a new project</string>
+    <string name="list_is_null">The list is empty, Cick + to create a new project</string>
+    <string name="new_project">New Project</string>
 </resources>
