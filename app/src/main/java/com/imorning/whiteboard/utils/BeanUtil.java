@@ -9,17 +9,10 @@ import java.lang.reflect.Method;
 
 public class BeanUtil {
     /**
-     * @return Object
-     * <p/>
-     * 用到反射机制
-     * <p/>
-     * 此方法将调用obj1的getter方法，将得到的值作为相应的参数传给obj2的setter方法
-     * <p/>
-     * 注意，obj1的getter方法和obj2方法必须是public类型
      *
      */
 
-    public static Object CopyBeanToBean(Object obj1, Object obj2) throws Exception {
+    public static void CopyBeanToBean(Object obj1, Object obj2) throws Exception {
 
         Method[] method1 = obj1.getClass().getMethods();
 
@@ -68,8 +61,6 @@ public class BeanUtil {
             }
 
         }
-
-        return obj2;
 
     }
 

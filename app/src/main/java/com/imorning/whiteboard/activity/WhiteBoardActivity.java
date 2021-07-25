@@ -50,7 +50,7 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
         setContentView(binding.getRoot());
         if (WhiteBoardApp.getFileTitle() != null) {
             binding.tvWhiteBoardHead.setText(WhiteBoardApp.getFileTitle());
-        }else{
+        } else {
             binding.tvWhiteBoardHead.setText(R.string.new_project);
         }
         changePenBack();
@@ -506,7 +506,7 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case WhiteBoardVariable.Operation.TEXT_CLICK:
-                ToastUtils.showToast(this, "Click...");
+                //ToastUtils.showToast(this, "Click...");
             case WhiteBoardVariable.Operation.ERASER_CLICK:
                 switch (OperationUtils.getInstance().mCurrentOperationPen) {
                     case WhiteBoardVariable.Operation.PEN_NORMAL:
@@ -717,7 +717,10 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
                 showMessage(getString(R.string.white_board_export_fail));
                 return;
             }
-            file.createNewFile();
+            if (!file.createNewFile()) {
+                showMessage(getString(R.string.no_permission));
+                return;
+            }
             FileOutputStream out = new FileOutputStream(file);
             binding.flView.setDrawingCacheEnabled(true);
             binding.flView.buildDrawingCache();
@@ -738,20 +741,6 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        final long mCurrentTime = System.currentTimeMillis();
-        if (mCurrentTime - this.mBackPressedTime > 1000) {
-            ToastUtils.showToast(getApplicationContext(), R.string.app_logout);
-            this.mBackPressedTime = mCurrentTime;
-            return;
-        }
-        WhiteBoardApp.setFilePath(null);
-        WhiteBoardApp.setFileTitle(null);
-        WhiteBoardApp.setIsModified(false);
-        super.onBackPressed();
-        finish();
-    }
 
     @ReceiveEvents(name = Events.WHITE_BOARD_TEXT_EDIT)
     private void textEdit() {
@@ -784,4 +773,24 @@ public class WhiteBoardActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        final long mCurrentTime = System.currentTimeMillis();
+        if (mCurrentTime - this.mBackPressedTime > 1000) {
+            ToastUtils.showToast(getApplicationContext(), R.string.app_logout);
+            this.mBackPressedTime = mCurrentTime;
+            return;
+        }
+        super.onBackPressed();
+        finish();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        WhiteBoardApp.setFilePath(null);
+        WhiteBoardApp.setFileTitle(null);
+        WhiteBoardApp.setIsModified(false);
+        super.onDestroy();
+    }
 }

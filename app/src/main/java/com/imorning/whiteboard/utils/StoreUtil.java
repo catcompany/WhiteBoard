@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.imorning.whiteboard.R;
+import com.imorning.whiteboard.WhiteBoardApp;
 import com.imorning.whiteboard.bean.DrawPenPoint;
 import com.imorning.whiteboard.bean.DrawPenStr;
 import com.imorning.whiteboard.bean.DrawPoint;
@@ -23,8 +24,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * The util for store project. </br>
@@ -34,43 +37,32 @@ public class StoreUtil {
     /**
      * the folder name for root dir  <br>
      * like: "/sdcard/{#ROOT_FOLDER}/"
-     *
      */
     public static final String ROOT_FOLDER = "WhiteBoard";
-
+    /**
+     * project ext.
+     */
+    public static final String PROJECT_FORMAT = ".wbp";
     private static final String TAG = "StoreUtil";
     private static final String CHARSET = "UTF-8";
-
     /**
      * The dir to save photo.
      */
-    private static final String PHOTO_DIR = "photo";
-
+    private static final String PHOTO_DIR = "photos";
     /**
      * photo format.
      */
     private static final String PHOTO_FORMAT_PNG = ".png";
-
     /**
      * default dir for saving wb projects.
      */
-    private static final String PROJECT_DIR = "wb";
-
-    /**
-     * project ext.
-     */
-    private static final String WB_FORMAT = ".wb";
-
-    /**
-     * default file name.
-     */
-    private static final String projectName = UUID.randomUUID().toString();
+    private static final String PROJECT_DIR = "projects";
 
     /**
      * 获取保存路径
      */
     public static String getPhotoSavePath() {
-        return getPhotoPath() + File.separator + projectName + PHOTO_FORMAT_PNG;
+        return getPhotoPath() + File.separator + getProjectName() + PHOTO_FORMAT_PNG;
     }
 
     public static String getPhotoPath() {
@@ -81,7 +73,11 @@ public class StoreUtil {
      * 获取保存路径
      */
     public static String getWbSavePath() {
-        return getWbPath() + File.separator + projectName + WB_FORMAT;
+        if (WhiteBoardApp.getFilePath() == null) {
+            return getWbPath() + File.separator + getProjectName() + PROJECT_FORMAT;
+        } else {
+            return WhiteBoardApp.getFilePath();
+        }
     }
 
     public static String getWbPath() {
@@ -96,7 +92,8 @@ public class StoreUtil {
         if (whiteBoardPoints == null || whiteBoardPoints.getWhiteBoardPoints() == null || whiteBoardPoints.getWhiteBoardPoints().isEmpty()) {
             return;
         }
-        for (WhiteBoardPoint whiteBoardPoint : whiteBoardPoints.getWhiteBoardPoints()) {//清除绘画路径，保留字符串形式就行
+        for (WhiteBoardPoint whiteBoardPoint : whiteBoardPoints.getWhiteBoardPoints()) {
+            //清除绘画路径，保留字符串形式就行
             for (DrawPoint drawPoint : whiteBoardPoint.getSavePoints()) {
                 if (drawPoint.getType() == OperationUtils.DRAW_PEN) {
                     drawPoint.setDrawPen(null);
@@ -169,7 +166,7 @@ public class StoreUtil {
      */
     public static void write(String strWb, String path) {
         if (TextUtils.isEmpty(strWb) || TextUtils.isEmpty(path)) {
-            Log.d(TAG, "Trying to save null or 0 length strWb or path");
+            Log.e(TAG, "Trying to save null or 0 length strWb or path");
             return;
         }
         File toFile = new File(path);
@@ -242,4 +239,7 @@ public class StoreUtil {
     }
 
 
+    public static String getProjectName() {
+        return new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault()).format(new Date());
+    }
 }

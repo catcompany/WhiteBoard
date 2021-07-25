@@ -7,7 +7,7 @@
     <color name="colorNavigationBar">#01991124</color>
     <color name="colorText">#FFF9F9F9</color>
     <color name="colorWindowBackground">#FF000000</color>
-    <color name="colorDivide">#FFF00000</color>
+    <color name="colorDivide">#CCFF90</color>
 
 
 </resources>

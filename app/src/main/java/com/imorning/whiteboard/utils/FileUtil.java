@@ -15,9 +15,6 @@ public class FileUtil {
 
     /**
      * 获取指定文件名字
-     *
-     * @param file
-     * @return
      */
     public static String getFileName(File file) {
         final String name = file.getName();
@@ -49,7 +46,7 @@ public class FileUtil {
             e.printStackTrace();
             Log.e("获取文件大小", "获取失败!");
         }
-        return FormetFileSize(blockSize);
+        return formatFileSize(blockSize);
     }
 
     /**
@@ -72,15 +69,12 @@ public class FileUtil {
             e.printStackTrace();
             Log.e("获取文件大小", "获取失败!");
         }
-        return FormetFileSize(blockSize, sizeType);
+        return formatFileSize(blockSize, sizeType);
     }
 
     /**
      * 获取指定文件大小
      *
-     * @param file
-     * @return
-     * @throws Exception
      */
     private static long getFileSize(File file) throws Exception {
         long size = 0;
@@ -98,18 +92,15 @@ public class FileUtil {
     /**
      * 获取指定文件夹
      *
-     * @param f
-     * @return
-     * @throws Exception
      */
     private static long getFileSizes(File f) throws Exception {
         long size = 0;
-        File[] flist = f.listFiles();
-        for (int i = 0; i < flist.length; i++) {
-            if (flist[i].isDirectory()) {
-                size = size + getFileSizes(flist[i]);
+        File[] files = f.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                size = size + getFileSizes(file);
             } else {
-                size = size + getFileSize(flist[i]);
+                size = size + getFileSize(file);
             }
         }
         return size;
@@ -118,10 +109,8 @@ public class FileUtil {
     /**
      * 转换文件大小
      *
-     * @param fileS
-     * @return
      */
-    private static String FormetFileSize(long fileS) {
+    private static String formatFileSize(long fileS) {
         DecimalFormat df = new DecimalFormat("#.00");
         String fileSizeString = "";
         String wrongSize = "0B";
@@ -143,11 +132,8 @@ public class FileUtil {
     /**
      * 转换文件大小,指定转换的类型
      *
-     * @param fileS
-     * @param sizeType
-     * @return
      */
-    private static double FormetFileSize(long fileS, int sizeType) {
+    private static double formatFileSize(long fileS, int sizeType) {
         DecimalFormat df = new DecimalFormat("#.00");
         double fileSizeLong = 0;
         switch (sizeType) {

@@ -13,14 +13,6 @@ public class WhiteBoardApp extends Application {
     private static String fileTitle;
     private static boolean isModified;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        AppContextUtil.init(this);
-        SdCardStatus.init(StoreUtil.ROOT_FOLDER);
-        OperationUtils.getInstance().init();
-    }
-
     public static String getFilePath() {
         return filePath;
     }
@@ -43,5 +35,13 @@ public class WhiteBoardApp extends Application {
 
     public static void setIsModified(boolean isModified) {
         WhiteBoardApp.isModified = isModified;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        AppContextUtil.init(this);
+        SdCardStatus.init(StoreUtil.ROOT_FOLDER);
+        OperationUtils.getInstance().init();
     }
 }

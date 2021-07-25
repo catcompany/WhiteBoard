@@ -30,7 +30,7 @@
                 <data
                     android:host="*"
                     android:mimeType="*/*"
-                    android:pathPattern=".*\\.wb"
+                    android:pathPattern=".*\\.wbp"
                     android:scheme="file" />
             </intent-filter>
             <intent-filter>

@@ -7,10 +7,8 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.imorning.whiteboard.WhiteBoardApp;
 import com.imorning.whiteboard.adapter.WbItemAdapter;
@@ -29,6 +27,7 @@ public class MainActivity extends BaseActivity {
 
     private List<FileListData> fileLists;
     private ActivityMainBinding binding;
+    private WbItemAdapter itemAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class MainActivity extends BaseActivity {
         binding.rvWb.setLayoutManager(new LinearLayoutManager(MainActivity.this));//这里用线性显示 类似于listview
         //binding.rvWb.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));//这里用线性宫格显示 类似于grid view
         //binding.rvWb.setLayoutManager(new StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL));//这里用线性宫格显示 类似于瀑布流
-        WbItemAdapter itemAdapter = new WbItemAdapter(MainActivity.this, fileLists);
+        itemAdapter = new WbItemAdapter(MainActivity.this, fileLists);
         itemAdapter.setOnItemClickListener((position, fileListDataList) -> {
             //设置全局变量
             WhiteBoardApp.setFileTitle(fileListDataList.get(position).getTitle());
@@ -58,15 +57,13 @@ public class MainActivity extends BaseActivity {
             Intent intent = new Intent(MainActivity.this, WhiteBoardActivity.class);
             startActivity(intent);
         });
-        itemAdapter.setOnItemLongClickListener(new WbItemAdapter.onItemLongClickListener() {
-            @Override
-            public void onItemLongClick(int Position, List<FileListData> fileListDataList) {
-                // TODO: 2021/7/25 Add context menu for rename,delete...
-                Log.d("TAG", "onItemLongClick: " + fileListDataList.get(Position).getFilePath());
-            }
+        itemAdapter.setOnItemLongClickListener((Position, fileListDataList) -> {
+            // TODO: 2021/7/25 Add context menu for rename,delete...
+            itemAdapter.removeItem(Position);
         });
         binding.rvWb.setAdapter(itemAdapter);
-        binding.rvWb.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        binding.rvWb.setItemAnimator(new DefaultItemAnimator());
+        binding.rvWb.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         binding.fabWbAdd.setOnClickListener(v -> {
             OperationUtils.getInstance().initDrawPointList();
             Intent intent = new Intent(MainActivity.this, WhiteBoardActivity.class);

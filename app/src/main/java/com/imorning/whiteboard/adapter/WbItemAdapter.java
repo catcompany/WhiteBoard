@@ -1,9 +1,11 @@
 package com.imorning.whiteboard.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -14,6 +16,7 @@ import com.imorning.whiteboard.bean.FileListData;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -51,11 +54,26 @@ public class WbItemAdapter extends RecyclerView.Adapter<WbItemAdapter.ItemViewHo
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         FileListData fileListData = fileListDataList.get(position);
         holder.textView.setText(fileListData.getTitle());
+
     }
 
     @Override
     public int getItemCount() {
         return fileListDataList == null ? 0 : fileListDataList.size();
+    }
+
+    /**
+     * 删除条目
+     * @param position 条目的位置
+     */
+    // TODO: 2021/7/26 Finish here
+    public void removeItem(int position) {
+        if (position < 0 || position > fileListDataList.size()) {
+            return;
+        }
+        //fileListDataList.remove(position);
+        //new File(fileListDataList.get(position).getFilePath()).delete();
+        //notifyDataSetChanged();
     }
 
     public interface onItemClickListener {
@@ -80,15 +98,12 @@ public class WbItemAdapter extends RecyclerView.Adapter<WbItemAdapter.ItemViewHo
                     onItemClickListener.onItemClick(getAdapterPosition(), fileListDataList);
                 }
             });
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (onItemLongClickListener != null) {
-                        onItemLongClickListener.onItemLongClick(getAdapterPosition(), fileListDataList);
-                        return true;
-                    }
-                    return false;
+            itemView.setOnLongClickListener(view -> {
+                if (onItemLongClickListener != null) {
+                    onItemLongClickListener.onItemLongClick(getAdapterPosition(), fileListDataList);
+                    return true;
                 }
+                return false;
             });
 
         }

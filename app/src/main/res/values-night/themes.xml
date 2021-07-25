@@ -15,12 +15,9 @@
         <item name="android:textColor">@color/colorText</item>
         <!-- 窗口背景色-->
         <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <!--RecyclerView的分割线-->
+        <item name="android:listDivider">@drawable/recyclerview_divider_bg</item>
 
-
-    </style>
-
-
-    <style name="Theme.WhiteBoardActivity" parent="Theme.AppCompat.NoActionBar">
 
     </style>
 
